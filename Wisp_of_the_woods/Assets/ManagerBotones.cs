@@ -14,52 +14,61 @@ public class ManagerBotones : MonoBehaviour
     public EventSystem eventSystem;
     public GameObject fundido;
 
+
+    public bool activo;
+
     private void OnLevelWasLoaded(int level)
     {
         if (menuPausa != null)
+        {
             menuPausa.SetActive(false);
-        Destroy(GameObject.FindGameObjectWithTag("Fundido").gameObject);
+        }
         
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
     }
 
     public GameObject menuPausa;
     private object eventData;
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Canvas");
+        
+    }
 
     public void activarGameObject(GameObject objeto)
     {
-        objeto.SetActive(!objeto.activeInHierarchy);
+        if (activo)
+            objeto.SetActive(!objeto.activeInHierarchy);
     }
 
 
     public void cargarPartida()
     {
-        GameObject objeto =  Instantiate(fundido, transform);
-        objeto.GetComponent<Animator>().Play("FundidoBueno", -1, 0f);
+        SceneManager.LoadScene(1);
+       
     }
 
     public void FinCargarPartida()
     {
-        StartCoroutine(a());
-    }
-
-    public IEnumerator a()
-    {
-        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene(1);
     }
+
+    
 
     private void Update()
     {
         if (Time.timeScale == 0 && menuPausa != null)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            
             menuPausa.SetActive(true);
         }
         else if(Time.timeScale == 1 && menuPausa != null)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            
             menuPausa.SetActive(false);
         }
 
@@ -74,7 +83,8 @@ public class ManagerBotones : MonoBehaviour
 
     public void Exit()
     {
-        Application.Quit();
+        if (activo)
+            Application.Quit();
     }
 
     public void Resume(characterMovement player)
