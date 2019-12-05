@@ -14,6 +14,9 @@ TagManager:
   - Arbusto
   - Fundido
   - Canvas
+  - a
+  - Guardias
+  - Cinematica
   layers:
   - Default
   - TransparentFX
@@ -27,7 +30,7 @@ TagManager:
   - Enemy
   - Suelo
   - Canvas
-  - 
+  - A
   - 
   - 
   - 

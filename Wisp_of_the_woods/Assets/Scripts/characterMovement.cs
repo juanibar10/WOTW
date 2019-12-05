@@ -24,26 +24,43 @@ public class characterMovement : MonoBehaviour
     public GameObject arbusto;
     public bool llamarHermano;
 
+    public GameObject interrogacion;
+
     public float contador;
 
     private void Awake()
     {
         checkpoint = transform.position;
-        for(int i = 0; i < FindObjectsOfType<DetectionManager>().Length; i++)
-        {
-            detectionManager.Add(FindObjectsOfType<DetectionManager>()[i].gameObject);
-        }
+        
         
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
+    private void OnEnable()
+    {
+        StartCoroutine(activar());
+    }
+
+    public IEnumerator activar()
+    {
+        yield return new WaitForSeconds(1);
+        for (int i = 0; i < FindObjectsOfType<DetectionManager>().Length; i++)
+        {
+            detectionManager.Add(FindObjectsOfType<DetectionManager>()[i].gameObject);
+        }
+    }
     void Update()
     {
         if (!menuPausa)
         {
             if (!detectado)
             {
+                if (llamarHermano)
+                {
+                    interrogacion.SetActive(false);
+                }
+
                 if (!GetComponent<Animator>().GetBool("Movement") && !escondido)
                 {
                     contador += Time.deltaTime;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class waypoints : MonoBehaviour
 {
@@ -62,23 +63,33 @@ public class waypoints : MonoBehaviour
 
         if (detectionManager.detectadoVisual && !detectado)
         {
-            navMeshAgent.SetDestination(player.transform.position);
+            FindObjectOfType<ReiniciarEscena>().activo = true;
+            GameObject.FindGameObjectWithTag("Fly").transform.GetChild(0).gameObject.SetActive(true);
+            StartCoroutine(ab());
+
+            /*navMeshAgent.SetDestination(player.transform.position);
             navMeshAgent.stoppingDistance = 3.5f;
-            detectado = true;
+            detectado = true;*/
         }
 
-        if(detectionManager.detectadoVisual && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        /*if(detectionManager.detectadoVisual && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
             navMeshAgent.isStopped = true;
             player.GetComponent<characterMovement>().detectado = true;
             detectado = false;
             StartCoroutine(cambiarLuz());
-        }
+        }*/
 
         if (investigando)
         {
             StartCoroutine(Investigar());
         }
+    }
+
+    public IEnumerator ab()
+    {
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene(1);
     }
     public IEnumerator cambiarLuz()
     {
