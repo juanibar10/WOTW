@@ -13,7 +13,7 @@ public class ActivarJuego : MonoBehaviour
         {
             Jugador.SetActive(true);
             Guardias.SetActive(true);
-            transform.parent.parent.gameObject.SetActive(false);
+            transform.parent.parent.parent.gameObject.SetActive(false);
         }
     }
 }

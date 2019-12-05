@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -238,6 +238,7 @@ MonoBehaviour:
   titulo: {fileID: 650138154}
   activoControles: 0
   eventSystem: {fileID: 518934787}
+  fundido: {fileID: 5990652946258125497, guid: 2ada2300dbb777d45b5dc3570fc4d6bc, type: 3}
   menuPausa: {fileID: 0}
 --- !u!1 &184002658
 GameObject:
@@ -883,6 +884,7 @@ GameObject:
   - component: {fileID: 978323930}
   - component: {fileID: 978323932}
   - component: {fileID: 978323931}
+  - component: {fileID: 978323933}
   m_Layer: 5
   m_Name: Titulo
   m_TagString: Untagged
@@ -927,7 +929,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 965dcf4134c39f84b8103af5be23243a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7e7bff835045c2b4e814991bb9599490, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -945,6 +947,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 978323929}
   m_CullTransparentMesh: 0
+--- !u!95 &978323933
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978323929}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1266417fe1be31648b2e35c732de0d86, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1539619978
 GameObject:
   m_ObjectHideFlags: 0

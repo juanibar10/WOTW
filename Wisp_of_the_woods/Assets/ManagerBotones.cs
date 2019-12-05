@@ -12,11 +12,14 @@ public class ManagerBotones : MonoBehaviour
     public GameObject titulo;
     public bool activoControles;
     public EventSystem eventSystem;
+    public GameObject fundido;
 
     private void OnLevelWasLoaded(int level)
     {
         if (menuPausa != null)
             menuPausa.SetActive(false);
+        Destroy(GameObject.FindGameObjectWithTag("Fundido").gameObject);
+        
     }
 
     public GameObject menuPausa;
@@ -27,8 +30,21 @@ public class ManagerBotones : MonoBehaviour
         objeto.SetActive(!objeto.activeInHierarchy);
     }
 
+
     public void cargarPartida()
     {
+        GameObject objeto =  Instantiate(fundido, transform);
+        objeto.GetComponent<Animator>().Play("FundidoBueno", -1, 0f);
+    }
+
+    public void FinCargarPartida()
+    {
+        StartCoroutine(a());
+    }
+
+    public IEnumerator a()
+    {
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene(1);
     }
 
@@ -47,7 +63,7 @@ public class ManagerBotones : MonoBehaviour
             menuPausa.SetActive(false);
         }
 
-        if (activoControles && Input.GetKeyDown(KeyCode.JoystickButton2))
+        if (activoControles && Input.GetKeyDown(KeyCode.JoystickButton1))
         {
             controles.SetActive(false);
             titulo.SetActive(true);
@@ -63,10 +79,16 @@ public class ManagerBotones : MonoBehaviour
 
     public void Resume(characterMovement player)
     {
-        player.menuPausa = false;
+        StartCoroutine(menupausa(player));
         Time.timeScale = 1;
     }
 
+
+    public IEnumerator menupausa(characterMovement player)
+    {
+        yield return new WaitForSeconds(1);
+        player.menuPausa = false;
+    }
     public void irMenu()
     {
         menuPausa.SetActive(false);

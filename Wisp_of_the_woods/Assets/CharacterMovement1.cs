@@ -25,6 +25,8 @@ public class CharacterMovement1 : MonoBehaviour
         
         if(Input.GetAxis("Vertical") > 0)
         {
+            GetComponent<Animator>().SetBool("Sentarse", false);
+            GetComponent<characterMovement>().contador = 0;
             GetComponent<MAnimal>().alwaysForward.Value = true;
         }
         else
@@ -37,6 +39,7 @@ public class CharacterMovement1 : MonoBehaviour
          else if(Input.GetAxis("Horizontal") < 0)
              transform.Translate(Vector3.back * Input.GetAxis("Horizontal") * velocidad * Time.fixedDeltaTime, Space.Self);
          else */
+
         if (Input.GetAxis("Vertical") > 0)
             transform.Translate(Vector3.forward * Input.GetAxis("Vertical") * velocidad * Time.fixedDeltaTime, Space.Self);
         else if (Input.GetAxis("Vertical") < 0)

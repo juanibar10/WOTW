@@ -24,6 +24,8 @@ public class characterMovement : MonoBehaviour
     public GameObject arbusto;
     public bool llamarHermano;
 
+    public float contador;
+
     private void Awake()
     {
         checkpoint = transform.position;
@@ -42,9 +44,16 @@ public class characterMovement : MonoBehaviour
         {
             if (!detectado)
             {
+                if (!GetComponent<Animator>().GetBool("Movement") && !escondido)
+                {
+                    contador += Time.deltaTime;
+
+                    if(contador >= 5)
+                        GetComponent<Animator>().SetBool("Sentarse", true);
+                }
                 if (aullar)
                 {
-                    if (Input.GetKeyDown(TeclaSilvar) || Input.GetKeyDown(KeyCode.JoystickButton0))
+                    if (Input.GetKeyDown(TeclaSilvar) || Input.GetKeyDown(KeyCode.JoystickButton2))
                     {
                         GetComponent<Animator>().SetBool("Aullar", true);
                         GetComponent<MalbersAnimations.Controller.MAnimal>().lockMovement.Value = true;
@@ -54,24 +63,28 @@ public class characterMovement : MonoBehaviour
 
                 if (interactuarArbustos)
                 {
-                    if (!saltar && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1)))
+                    if (!saltar && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)))
                     {
+                        GetComponent<CharacterMovement1>().enabled = false;
+                        if (GetComponent<Animator>().GetBool("Sentarse"))
+                        {
+                            GetComponent<Animator>().SetBool("Sentarse", false);
+                            contador = 0;
+                        }
                         GetComponent<LookatTarget>().enabled = true;
                         GetComponent<LookatTarget>().SetTarget(arbusto.transform);
                         saltar = true;
                         escondido = true;
                         GetComponent<Animator>().SetBool("Salto", true);
-                        GetComponent<CharacterMovement1>().enabled = false;
-
                     }
-                    else if (saltar && (Input.GetKeyDown(KeyCode.Space)  || Input.GetKeyDown(KeyCode.JoystickButton1)))
+                    else if (saltar && (Input.GetKeyDown(KeyCode.Space)  || Input.GetKeyDown(KeyCode.JoystickButton0)))
                     {
                         saltar = false;
                         escondido = false;
                         transform.GetChild(3).gameObject.SetActive(true);
                         camara.SetTarget(transform.GetChild(0).transform);
-                        GetComponent<CharacterMovement1>().enabled = true;
                         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180, transform.eulerAngles.z);
+                        GetComponent<Animator>().SetBool("Salir", true);
                     }
                 }
 
@@ -79,7 +92,7 @@ public class characterMovement : MonoBehaviour
 
                 foreach (var item in detectionManager)
                 {
-                    if ((Input.GetKeyDown(TeclaSilvar) || Input.GetKeyDown(KeyCode.JoystickButton0)) && item.GetComponent<DetectionManager>().detectable)
+                    if ((Input.GetKeyDown(TeclaSilvar) || Input.GetKeyDown(KeyCode.JoystickButton2)) && item.GetComponent<DetectionManager>().detectable)
                     {
                         GetComponent<Animator>().speed = 2;
                         Silvar();
@@ -87,8 +100,6 @@ public class characterMovement : MonoBehaviour
                         GetComponent<Animator>().SetBool("Aullar", true);
                         GetComponent<MalbersAnimations.Controller.MAnimal>().lockMovement.Value = true;
                         GetComponent<CharacterMovement1>().enabled = false;
-                        
-                        
                     }
                 }
                 
@@ -123,6 +134,13 @@ public class characterMovement : MonoBehaviour
         }
     }
 
+    public void salirFin()
+    {
+        GetComponent<CharacterMovement1>().enabled = true;
+        GetComponent<Animator>().SetBool("Salir", false);
+    }
+
+
     public void reactivarScripts()
     {
         GetComponent<Animator>().enabled = true;
@@ -137,6 +155,7 @@ public class characterMovement : MonoBehaviour
         GetComponent<Animator>().SetBool("Aullar", false);
         GetComponent<CharacterMovement1>().enabled = true;
     }
+
     public void desactivarAullarPiedra()
     {
         if (llamarHermano)

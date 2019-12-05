@@ -1,0 +1,2 @@
+E:\DISEÑO DE VIDEOJUEGOS\PROYECTO FINAL\Wisp-of-the-Woods\Wisp_of_the_woods\obj\Debug\Assembly-CSharp-Editor.csprojAssemblyReference.cache
+E:\DISEÑO DE VIDEOJUEGOS\PROYECTO FINAL\Wisp-of-the-Woods\Wisp_of_the_woods\obj\Debug\Assembly-CSharp-Editor.csproj.CoreCompileInputs.cache
