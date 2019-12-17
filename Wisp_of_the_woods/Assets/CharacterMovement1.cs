@@ -6,44 +6,74 @@ using MalbersAnimations.Scriptables;
 
 public class CharacterMovement1 : MonoBehaviour
 {
-
+    public CharacterController controller;
     public float velocidad;
-    
-    void FixedUpdate()
+    public float gravity;
+    public LayerMask mask;
+    RaycastHit hit;
+    RaycastHit hit2;
+    RaycastHit hit3;
+    RaycastHit hit4;
+
+    public bool enSuelo;
+
+    private void Awake()
+    {
+        controller = GetComponent<CharacterController>();
+    }
+
+    private void Update()
+    {
+        Vector3 input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        if (!enSuelo)
+        {
+            input += (Vector3.up * gravity) * Time.deltaTime;
+        }
+
+        controller.Move(input * velocidad * Time.deltaTime);
+        print(GetAligment());
+
+        Debug.DrawRay(transform.position + new Vector3(0.2f, 0.3f, 0.2f), -transform.up, Color.red);
+        Debug.DrawRay(transform.position + new Vector3(0.2f, 0.3f, -0.2f), -transform.up, Color.red);
+        Debug.DrawRay(transform.position + new Vector3(-0.2f, 0.3f, 0.2f), -transform.up, Color.red);
+        Debug.DrawRay(transform.position + new Vector3(-0.2f, 0.3f, -0.2f), -transform.up, Color.red);
+    }
+
+    bool GetAligment()
     {
         
 
-        if (/*Input.GetAxis("Horizontal") == 1 || */ Input.GetAxis("Vertical") == 1 )
-            GetComponent<Animator>().SetFloat("Vertical", 1);
-        else if(/*Input.GetAxis("Horizontal") == -1 || */Input.GetAxis("Vertical") == -1)
-            GetComponent<Animator>().SetFloat("Vertical", -1);
-        else
+        if(Physics.Raycast(transform.position + new Vector3(0.2f, 0.3f, 0.2f)    ,  -transform.up, out hit, 0.7f, mask))
         {
-            //GetComponent<Animator>().SetFloat("Horizontal", Input.GetAxis("Horizontal"));
-            GetComponent<Animator>().SetFloat("Vertical", Input.GetAxis("Vertical"));
+            Physics.Raycast(transform.position + new Vector3(0.2f, 0.3f, -0.2f)  ,  -transform.up, out hit2, 0.7f, mask);
+            Physics.Raycast(transform.position + new Vector3(-0.2f, 0.3f, 0.2f)  ,  -transform.up, out hit3, 0.7f, mask);
+            Physics.Raycast(transform.position + new Vector3(-0.2f, 0.3f, -0.2f) ,  -transform.up, out hit4, 0.7f, mask);
+
+            Vector3 nextUp = (hit.normal + hit2.normal + hit3.normal + hit4.normal).normalized;
+
+            transform.up = nextUp;
+            return true;
         }
+
         
-        if(Input.GetAxis("Vertical") > 0)
+        return false;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.tag == "Suelo")
         {
-            GetComponent<Animator>().SetBool("Sentarse", false);
-            GetComponent<characterMovement>().contador = 0;
-            GetComponent<MAnimal>().alwaysForward.Value = true;
-        }
-        else
-        {
-            GetComponent<MAnimal>().alwaysForward.Value = false;
+            enSuelo = true;
+            print("Colisiona con el suelo");
         }
 
-        /* if(Input.GetAxis("Horizontal") > 0)
-             transform.Translate(Vector3.forward * Input.GetAxis("Horizontal") * velocidad * Time.fixedDeltaTime, Space.Self);
-         else if(Input.GetAxis("Horizontal") < 0)
-             transform.Translate(Vector3.back * Input.GetAxis("Horizontal") * velocidad * Time.fixedDeltaTime, Space.Self);
-         else */
-
-        if (Input.GetAxis("Vertical") > 0)
-            transform.Translate(Vector3.forward * Input.GetAxis("Vertical") * velocidad * Time.fixedDeltaTime, Space.Self);
-        else if (Input.GetAxis("Vertical") < 0)
-            transform.Translate(Vector3.back * Input.GetAxis("Vertical") * velocidad * Time.fixedDeltaTime, Space.Self);
-            
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.tag == "Suelo")
+        {
+            enSuelo = false;
+            print("No colisiona con el suelo");
+        }
     }
 }
